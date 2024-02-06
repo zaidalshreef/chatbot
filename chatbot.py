@@ -1,5 +1,9 @@
 from flask import Flask, request, jsonify, make_response
-from langchain.chat_models import ChatOpenAI
+from google.cloud import aiplatform
+from langchain_google_genai import GoogleGenerativeAI
+# from langchain.chat_models import ChatOpenAI
+from langchain.llms import VertexAI
+from langchain.chat_models import ChatVertexAI
 from langchain.prompts.chat import (
     ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate, MessagesPlaceholder
 )
@@ -9,15 +13,31 @@ from dotenv import load_dotenv
 import uuid
 from flask_cors import CORS
 
+
 # Load environment variables
 load_dotenv()
 
+# chat = GoogleGenerativeAI(model="models/text-bison-001")
+# LLM model
+llm = VertexAI(
+    model_name="text-bison@001",
+    max_output_tokens=256,
+    temperature=0.1,
+    top_p=0.8,
+    top_k=40,
+    verbose=True,
+)
+
+# Chat
+chat = ChatVertexAI()
+
+
 # Initialize ChatOpenAI
-chat = ChatOpenAI(temperature=0)
+# chat = ChatOpenAI(temperature=0)
 
 # Set up the prompt template for the chat
 prompt_template = ChatPromptTemplate.from_messages([
-    SystemMessagePromptTemplate.from_template("you are a programmer, speak only in programming languages and tools"),
+    SystemMessagePromptTemplate.from_template("you are a career mentor helping students and fresh grads with their career advice. Respond with helpful guidance."),
     MessagesPlaceholder(variable_name="history"),
     HumanMessagePromptTemplate.from_template("{input}")
 ])
@@ -49,6 +69,7 @@ def chatbot_response():
     # Initialize ConversationChain using ChatOpenAI and specific memory
     conversation = ConversationChain(memory=memory, prompt=prompt_template, llm=chat)
     response_text = conversation.predict(input=input_text)
+    # response_text = conversation.invoke(input=input_text)
 
     # Create response object
     response = make_response(jsonify({"response": response_text}))
