@@ -24,13 +24,13 @@ async function sendMessageToChatbot(message) {
 // Function to display a message in the chat interface
 function displayMessage(message, sender) {
   const messageDiv = `
-   <div class="flex justify-${sender === "user" ? "end" : "start"}">
+  <div class="flex justify-${sender === "user" ? "end" : "start"}">
     <div class=" bg-${sender === "user" ? "purple-500" : "gray-700"} rounded-2xl py-2 px-4 max-w-md lg:max-w-xl">
-  ${sender === "user" ? messageBubble.textContent = message : messageBubble.innerHTML = marked.parse(message)}
+  ${sender === "user" ? message : marked.parse(message)}
     </div>
   </div>`
 
-  document.getElementById("messagesContainer").appendChild(messageDiv);
+  document.getElementById("messagesContainer").innerHTML += messageDiv;
 }
 
 
@@ -42,7 +42,8 @@ async function handleFormSubmit(event) {
   // Check if already loading
   if (isLoading) return;
 
-  const message = document.getElementById("chatbotInput").value;
+  const inputField = document.getElementById("chatbotInput");
+  const message = inputField.value;
 
   // do not send empty messages
   if (message === "") return;
@@ -77,4 +78,4 @@ async function handleFormSubmit(event) {
 }
 
 // Add an event listener to the form to handle form submissions
-document.querySelector("#chatForm").addEventListener("submit", handleFormSubmit);
+document.querySelector("#chatbotForm").addEventListener("submit", handleFormSubmit);
