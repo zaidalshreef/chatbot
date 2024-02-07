@@ -173,3 +173,9 @@ yarl==1.9.4
 zipp==3.17.0
 zope.event==5.0
 zope.interface==6.1
+
+pip~=24.0
+argparse~=1.4.0
+setuptools~=65.5.0
+cffi~=1.16.0
+pycparser~=2.21

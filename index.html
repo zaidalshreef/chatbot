@@ -10,22 +10,24 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <script src="main.js"></script>
 
 
   </head>
-  <body class="bg-gray-800 w-full h-screen flex items-center justify-center">
+  <body class="w-full py-4 mx-auto h-screen flex justify-center items-stretch items-center justify-center">
     <!-- Chatbot Container -->
     <div
-      class="bg-gray-900 flex flex-col justify-between h-full text-white rounded-lg shadow-lg p-6 w-full md:w-3/4 lg:w-1/2"
+      class="chat-container flex flex-col justify-between text-white rounded-lg shadow-lg p-6 w-full md:w-3/4 lg:w-1/2"
     >
         <!-- Chatbot Header -->
         <div class="border-b flex gap-3 items-center border-gray-700 pb-4 mb-4">
-          <div>
+          <div class="bg-white rounded-full">
             <img
-              src="images/image.png"
+              src="images/chatlogo.png"
               alt="Chatbot Icon"
               class="inline-block w-10 h-10 rounded-full"
             />
@@ -50,7 +52,7 @@
       <div class="pt-4 mb-4">
         <form
           id="chatbotForm"
-          class="flex px-2 bg-purple-500 rounded-full items-center gap-2"
+          class="flex px-2 bg-gray-800 group border border-gray-600 hover:border-purple-500 transition rounded-full items-center gap-2"
         >
           <input
             id="chatbotInput"
@@ -60,7 +62,7 @@
           />
           <button
             id="sendButton"
-            class="rounded-full w-9 h-9 flex items-center justify-center p-2 bg-purple-200"
+            class="rounded-full w-9 h-9 flex items-center justify-center p-2 bg-purple-500"
             type="submit"
           >
             <img class="w-6" src="images/send.png" />

@@ -73,7 +73,12 @@
           "lg:max-w-xl",
           sender === "user" ? "bg-purple-500" : "bg-gray-700",
         );
-        messageBubble.textContent = message;
+        // Convert Markdown to HTML if sender is not the user
+        if (sender !== "user") {
+          messageBubble.innerHTML = marked.parse(message);
+        } else {
+            messageBubble.textContent = message;
+        }
         messageDiv.appendChild(messageBubble);
         messagesContainer.appendChild(messageDiv);
       }
@@ -92,7 +97,8 @@
           "lg:max-w-md",
           "bg-gray-700",
         );
-        messageBubble.textContent = actualMessage;
+        // Convert Markdown to HTML for the actual message
+        messageBubble.innerHTML = marked.parse(actualMessage);
         messageDiv.appendChild(messageBubble);
 
         // Replace the loading message with the actual message

@@ -1,9 +1,6 @@
 from flask import Flask, request, jsonify, make_response
-from google.cloud import aiplatform
 from langchain_google_genai import GoogleGenerativeAI
 # from langchain.chat_models import ChatOpenAI
-from langchain.llms import VertexAI
-from langchain.chat_models import ChatVertexAI
 from langchain.prompts.chat import (
     ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate, MessagesPlaceholder
 )
@@ -17,20 +14,7 @@ from flask_cors import CORS
 # Load environment variables
 load_dotenv()
 
-# chat = GoogleGenerativeAI(model="models/text-bison-001")
-# LLM model
-llm = VertexAI(
-    model_name="text-bison@001",
-    max_output_tokens=256,
-    temperature=0.1,
-    top_p=0.8,
-    top_k=40,
-    verbose=True,
-)
-
-# Chat
-chat = ChatVertexAI()
-
+chat = GoogleGenerativeAI(model="models/gemini-pro")
 
 # Initialize ChatOpenAI
 # chat = ChatOpenAI(temperature=0)
