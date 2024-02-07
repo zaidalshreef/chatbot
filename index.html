@@ -1,55 +1,60 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chatbot Interface</title>
+
     <!-- Include Tailwind CSS from CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.4/dist/tailwind.min.css"
       rel="stylesheet"
     />
 
+    <!-- Include custom CSS -->
     <link rel="stylesheet" href="style.css" />
 
+    <!-- Include marked JS for markdown support -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-    <script src="main.js"></script>
-
-
   </head>
-  <body class="w-full py-4 mx-auto h-screen flex justify-center items-stretch items-center justify-center">
+
+  <body
+    class="w-full py-4 mx-auto h-screen flex justify-center items-stretch items-center justify-center"
+  >
     <!-- Chatbot Container -->
     <div
       class="chat-container flex flex-col justify-between text-white rounded-lg shadow-lg p-6 w-full md:w-3/4 lg:w-1/2"
     >
-        <!-- Chatbot Header -->
-        <div class="border-b flex gap-3 items-center border-gray-700 pb-4 mb-4">
-          <div class="bg-white rounded-full">
-            <img
-              src="images/chatlogo.png"
-              alt="Chatbot Icon"
-              class="inline-block w-10 h-10 rounded-full"
-            />
-          </div>
-          <div>
-            <h1 class="text-xl font-bold text-purple-400">THE CHATBOT</h1>
-            <p class="text-gray-400 text-sm">Ask me anything!</p>
-          </div>
+      <!-- Chatbot Header -->
+      <div class="border-b flex gap-3 items-center border-gray-700 pb-4 mb-4">
+        <div class="bg-white rounded-full">
+          <img
+            src="images/chatlogo.png"
+            alt="Chatbot Icon"
+            class="inline-block w-10 h-10 rounded-full"
+          />
         </div>
+        <div>
+          <h1 class="text-xl font-bold text-purple-400">THE CHATBOT</h1>
+          <p class="text-gray-400 text-sm">Ask me anything!</p>
+        </div>
+      </div>
 
-        <!-- Chatbot Messages -->
-        <div id="chatbot-msgs-container" class="h-full overflow-y-auto">
-          <div id="messagesContainer" class="h-full mr-3 space-y-4">
-            <p id="startChatMessage" class="text-gray-400 text-center">
-              Start a conversation with the AI!
-            </p>
-            <!-- Messages will be displayed here -->
-          </div>
+      <!-- Chatbot Messages -->
+      <div id="chatbot-msgs-container" class="h-full overflow-y-auto">
+        <div id="messagesContainer" class="h-full mr-3 space-y-4">
+          <p id="startChatMessage" class="text-gray-400 text-center">
+            Start a conversation with the AI!
+          </p>
+          <!-- Messages will be displayed here -->
         </div>
-      <!-- </div> -->
+      </div>
+
       <!-- Chatbot Input -->
       <div class="pt-4 mb-4">
+        <p id="loadingMessage" class="hidden text-gray-300 mb-4 text-center">
+          Loading...
+        </p>
         <form
           id="chatbotForm"
           class="flex px-2 bg-gray-800 group border border-gray-600 hover:border-purple-500 transition rounded-full items-center gap-2"
@@ -69,6 +74,9 @@
           </button>
         </form>
       </div>
+
+      
     </div>
+    <script src="main.js"></script>
   </body>
 </html>

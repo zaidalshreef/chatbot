@@ -1,111 +1,80 @@
- let isLoading = false;
 
-      // Function to send a message to the chatbot and get a response
-      async function sendMessageToChatbot(message) {
-        const response = await fetch(
-          "http://127.0.0.1:5000/chat",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ message: message }),
-          },
-        );
-        return await response.json();
-      }
+// is the chatbot currently loading a response 
+let isLoading = false;
 
-      // Function to handle the form submission
-      async function handleFormSubmit(event) {
-        event.preventDefault();
 
-        // Check if already loading
-        if (isLoading) return;
+// The function takes in one parameter: message (the message you want to send to the chatbot)
+async function sendMessageToChatbot(message) {
 
-        const inputField = document.getElementById("chatbotInput");
-        const message = inputField.value;
+  // Send a POST request to the chatbot API with your message as the payload 
+  const response = await fetch(
+    "http://127.0.0.1:5000/chat",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: message }),
+    },
+  );
+  return await response.json();
+}
 
-        // Check if the input is empty
-        if (message === "") return;
 
-        // Set loading state to true
-        isLoading = true;
+// Function to display a message in the chat interface
+function displayMessage(message, sender) {
+  const messageDiv = `
+   <div class="flex justify-${sender === "user" ? "end" : "start"}">
+    <div class=" bg-${sender === "user" ? "purple-500" : "gray-700"} rounded-2xl py-2 px-4 max-w-md lg:max-w-xl">
+  ${sender === "user" ? messageBubble.textContent = message : messageBubble.innerHTML = marked.parse(message)}
+    </div>
+  </div>`
 
-        // Disable the input and button during loading
-        inputField.disabled = true;
-        document.getElementById("sendButton").disabled = true;
+  document.getElementById("messagesContainer").appendChild(messageDiv);
+}
 
-        displayMessage(message, "user");
-        inputField.value = ""; // Clear the input field
 
-        // Display loading message
-        const loadingMessage = "Loading...";
-        displayMessage(loadingMessage, "bot");
 
-        try {
-          const response = await sendMessageToChatbot(message);
-          // Replace the loading message with the actual response
-          replaceMessage(loadingMessage, response.response);
-        } catch (error) {
-          console.error("Error fetching response:", error);
-          // Handle the error appropriately, e.g., display an error message to the user
-        } finally {
-          // Reset loading state and enable the input and button
-          isLoading = false;
-          inputField.disabled = false;
-          document.getElementById("sendButton").disabled = false;
-        }
-      }
-      // Function to display a message in the chat interface
-      function displayMessage(message, sender) {
-        const messagesContainer = document.getElementById("messagesContainer");
-        const messageDiv = document.createElement("div");
-        messageDiv.classList.add(
-          "flex",
-          sender === "user" ? "justify-end" : "justify-start",
-        );
-        const messageBubble = document.createElement("div");
-        messageBubble.classList.add(
-          "rounded-2xl",
-          "py-2",
-          "px-4",
-          "max-w-md",
-          "lg:max-w-xl",
-          sender === "user" ? "bg-purple-500" : "bg-gray-700",
-        );
-        // Convert Markdown to HTML if sender is not the user
-        if (sender !== "user") {
-          messageBubble.innerHTML = marked.parse(message);
-        } else {
-            messageBubble.textContent = message;
-        }
-        messageDiv.appendChild(messageBubble);
-        messagesContainer.appendChild(messageDiv);
-      }
-      function replaceMessage(loadingMessage, actualMessage) {
-        const messagesContainer = document.getElementById("messagesContainer");
-        const loadingMessageDiv = messagesContainer.lastChild;
-        // Create a new div for the actual message
-        const messageDiv = document.createElement("div");
-        messageDiv.classList.add("flex", "justify-start");
-        const messageBubble = document.createElement("div");
-        messageBubble.classList.add(
-          "rounded-lg",
-          "py-2",
-          "px-4",
-          "max-w-md",
-          "lg:max-w-md",
-          "bg-gray-700",
-        );
-        // Convert Markdown to HTML for the actual message
-        messageBubble.innerHTML = marked.parse(actualMessage);
-        messageDiv.appendChild(messageBubble);
+// Function to handle the form submission 
+async function handleFormSubmit(event) {
+  event.preventDefault();
 
-        // Replace the loading message with the actual message
-        messagesContainer.replaceChild(messageDiv, loadingMessageDiv);
-      }
+  // Check if already loading
+  if (isLoading) return;
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("chatbotForm");
-        form.addEventListener("submit", handleFormSubmit);
-      });
+  const message = document.getElementById("chatbotInput").value;
+
+  // do not send empty messages
+  if (message === "") return;
+
+  // Set loading state to true
+  isLoading = true;
+
+  // Disable the input and button during loading
+  inputField.disabled = true;
+  document.getElementById("sendButton").disabled = true;
+
+  displayMessage(message, "user");
+  inputField.value = ""; // Clear the input field
+
+  // Display loading message
+  document.getElementById("loadingMessage").style.display = "block";
+
+  try {
+    const response = await sendMessageToChatbot(message);
+    // Replace the loading message with the actual response
+    displayMessage(response.response, "chatbot");
+  } catch (error) {
+    console.error("Error fetching response:", error);
+    // Handle the error appropriately, e.g., display an error message to the user
+  } finally {
+    // Reset loading state and enable the input and button
+    isLoading = false;
+    inputField.disabled = false;
+    document.getElementById("loadingMessage").style.display = "none";
+    document.getElementById("sendButton").disabled = false;
+  }
+}
+
+// Add an event listener to the form to handle form submissions
+document.querySelector("#chatForm").addEventListener("submit", handleFormSubmit);
