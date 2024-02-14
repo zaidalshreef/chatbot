@@ -17,9 +17,6 @@ const PACKAGE_SESSION_TYPE_TITLE = "الباقة المتكاملة للتطور
 
 const EMAIL_VERIFICATION_MESSAGE = `في حال عدم وصول الرمز على علبة الوارد يرجى التحقق من خلال كتابة "Flawless" في البحث`;
 
-// Select the buttons that leads to Email verfication
-const EMAIL_BUTTON_LIST = document.querySelectorAll('div button[data-v-62b9ae33]');
-
 const FLAWLESS_HOME_PAGE = "https://www.weflawless.co";
 
 const FLAWLESS_BOOK_PAGE = "https://book.weflawless.co/"
@@ -149,7 +146,9 @@ function removeCheckEmailMsg() {
 
 // Function to handle the email buttons
 // Note: add the function to mutation observer
-function handleEmailButtons(buttons) {
+function handleEmailButtons() {
+    // Select the buttons that leads to Email verfication
+    const buttons = document.querySelectorAll('div button[data-v-62b9ae33]');
     buttons.forEach(button => {
         const buttonText = button.textContent.trim();
 
@@ -224,23 +223,32 @@ function findPhoneNumber() {
 }
 
 // Function to redirect user to the sign in page if the user tries to book a package session 
-// function redirectToSignIn() {
-//     let bookingTypes = document.querySelectorAll('.booking-type');
-//     bookingTypes.forEach(bookingType => {
-//         if (bookingType.textContent.includes(PACKAGE_SESSION_TYPE_TITLE) && !findPhoneNumber()) {
-//             bookingType.button.addEventListener('click', () => {
-//                 const navbarBtns = document.querySelectorAll('.navbar-nav .header-menu button');
-//                 navbarBtns.forEach(btn => {
-//                     if (btn.textContent.trim() === "حسابي") {
-//                         btn.click();
-//                     }
-//                 });
-//             });
-//             console.log("User is not signed in: ", findPhoneNumber());
-//         }
-//         console.log("User is signed in: ", findPhoneNumber());
-//     });
-// }
+function redirectToSignIn() {
+    let bookingTypes = document.querySelectorAll('.booking-type');
+    isSignedIn = findPhoneNumber();
+    // Query both wide and mobile screen buttons
+    const wideScreenBtns = document.querySelectorAll('.navbar-nav .header-menu button');
+    const mobileScreenBtns = document.querySelectorAll('button.main-menu-btn');
+
+    // Merge NodeLists into a single array for iteration
+    const navbarBtns = [...wideScreenBtns, ...mobileScreenBtns];
+
+    bookingTypes.forEach(bookingType => {
+        if (bookingType.textContent.includes(PACKAGE_SESSION_TYPE_TITLE) && !isSignedIn) {
+            let button = bookingType.querySelector('button'); 
+            button.addEventListener('click', (event) => {
+                event.preventDefault(); 
+                navbarBtns.forEach(btn => {
+                    if (btn.textContent.trim() === "حسابي" || btn.textContent.trim() === "My Account") {
+                        btn.click();
+                    }
+                });
+            });
+            console.log("User is not signed in: ", findPhoneNumber());
+        }
+        console.log("User is signed in: ", findPhoneNumber());
+    });
+}
 
 // Function to find the schedule success message and add the link
 // Note: add the function to mutation observer
@@ -254,49 +262,65 @@ function findScheduleSuccessMsg() {
     
             let bookedSessionType = document.querySelector("#__layout > div > div > div > div > div > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > div > div > div > ul > li:nth-child(1)");
     
-            let phoneNumber = findPhoneNumber();
-            checkAndAddLink(bookedSessionType, phoneNumber);
+            checkAndAddLink(bookedSessionType);
         }
+    }
+}
+
+/**
+ * Redirects the user to the home page and clicks on the specified session type.
+ */
+function clickTheNextSession(navbarBtns, toSessionType) {
+    // Set local storage to indicate the session type to click on after redirect
+    localStorage.setItem('nextSessionType', toSessionType);
+
+    // redirect user to the home page and click on the second session
+    setTimeout(() => {
+        navbarBtns.forEach(btn => {
+            if (btn.textContent.trim() === "الرئيسية" || btn.textContent.trim() === "Home") {
+                btn.click();
+            }
+        });
+    }, 2000);
+}
+
+function processToNextSessionType() {
+    const toSessionType = localStorage.getItem('nextSessionType');
+    if (toSessionType) {
+        console.log(`Processing to the next session type: ${toSessionType}`)
+        const bookingTypes = document.querySelectorAll('.booking-type');
+        bookingTypes.forEach(type => {
+            if (type.textContent.includes(toSessionType)) {
+                let button = type.querySelector('button');
+                if (button) {
+                    button.click();
+                    // Clear the local storage item after clicking
+                    localStorage.removeItem('nextSessionType');
+                }
+            }
+        });
     }
 }
 
 // Function to check and add the link when the session type matches
 function checkAndAddLink(sessionTypeElement) {
-    let bookingTypes = document.querySelectorAll('.booking-type');
+    // Query both wide and mobile screen buttons
+    const wideScreenBtns = document.querySelectorAll('.navbar-nav .header-menu button');
+    const mobileScreenBtns = document.querySelectorAll('button.main-menu-btn');
+
+    // Merge NodeLists into a single array for iteration
+    const navbarBtns = [...wideScreenBtns, ...mobileScreenBtns];
+
     // Check if the link has already been added
     if (!sessionTypeElement.querySelector('.custom-extra-link')) {
         if (sessionTypeElement.textContent.includes(PACKAGE_SESSION_TYPE_TITLE)) {
-            // redirect user to the home page and click on the second session
-            setTimeout(function () {
-                window.location.href = FLAWLESS_BOOK_PAGE;
-                bookingTypes.forEach(type => {
-                    if (type.textContent.includes(PACKAGE_SECOND_SESSION)) {
-                        type.querySelector('button').click();
-                    }
-                })
-            }, 2000);
+            clickTheNextSession(navbarBtns, PACKAGE_SECOND_SESSION)
         }
         else if (sessionTypeElement.textContent.includes(PACKAGE_SECOND_SESSION)) {
-            // redirect user to the home page and click on the second session
-            setTimeout(function () {
-                window.location.href = FLAWLESS_BOOK_PAGE;
-                bookingTypes.forEach(type => {
-                    if (type.textContent.includes(PACKAGE_THIRD_SESSION)) {
-                        type.querySelector('button').click();
-                    }
-                })
-            }, 2000);
+            clickTheNextSession(navbarBtns, PACKAGE_THIRD_SESSION)
         }
         else if (sessionTypeElement.textContent.includes(PACKAGE_THIRD_SESSION)) {
-            // redirect user to the home page and click on the second session
-            setTimeout(function () {
-                window.location.href = FLAWLESS_BOOK_PAGE;
-                bookingTypes.forEach(type => {
-                    if (type.textContent.includes(PACKAGE_FORTH_SESSION)) {
-                        type.querySelector('button').click();
-                    }
-                })
-            }, 2000);
+            clickTheNextSession(navbarBtns, PACKAGE_FORTH_SESSION)
         }
     } else console.log("link added");
 }
@@ -351,7 +375,7 @@ function addBookingBtnMobile () {
     if (svgElement) {
         // Replace the current SVG content with the new SVG code
         svgElement.innerHTML = `
-          <path d="m10,21.5v2.5h-1v-2.5c0-.827-.673-1.5-1.5-1.5H2.5c-.827,0-1.5.673-1.5,1.5v2.5H0v-2.5c0-1.378,1.121-2.5,2.5-2.5h5c1.379,0,2.5,1.122,2.5,2.5ZM2,14c0-1.654,1.346-3,3-3s3,1.346,3,3-1.346,3-3,3-3-1.346-3-3Zm1,0c0,1.103.897,2,2,2s2-.897,2-2-.897-2-2-2-2,.897-2,2Zm11.694-5l-2.02,1.746c-.19.169-.432.254-.673.254-.243,0-.487-.086-.682-.259l-1.977-1.741h-3.344V2.5c0-1.378,1.121-2.5,2.5-2.5h7c1.379,0,2.5,1.122,2.5,2.5v6.5h-3.306Zm-.373-1h2.679V2.5c0-.827-.673-1.5-1.5-1.5h-7c-.827,0-1.5.673-1.5,1.5v5.5h2.721l2.262,1.993,2.339-1.993Zm7.179,11h-5c-1.379,0-2.5,1.122-2.5,2.5v2.5h1v-2.5c0-.827.673-1.5,1.5-1.5h5c.827,0,1.5.673,1.5,1.5v2.5h1v-2.5c0-1.378-1.121-2.5-2.5-2.5Zm-2.5-8c1.654,0,3,1.346,3,3s-1.346,3-3,3-3-1.346-3-3,1.346-3,3-3Zm-2,3c0,1.103.897,2,2,2s2-.897,2-2-.897-2-2-2-2,.897-2,2Z"/>
+            <path d="m10,21.5v2.5h-1v-2.5c0-.827-.673-1.5-1.5-1.5H2.5c-.827,0-1.5.673-1.5,1.5v2.5H0v-2.5c0-1.378,1.121-2.5,2.5-2.5h5c1.379,0,2.5,1.122,2.5,2.5ZM2,14c0-1.654,1.346-3,3-3s3,1.346,3,3-1.346,3-3,3-3-1.346-3-3Zm1,0c0,1.103.897,2,2,2s2-.897,2-2-.897-2-2-2-2,.897-2,2Zm11.694-5l-2.02,1.746c-.19.169-.432.254-.673.254-.243,0-.487-.086-.682-.259l-1.977-1.741h-3.344V2.5c0-1.378,1.121-2.5,2.5-2.5h7c1.379,0,2.5,1.122,2.5,2.5v6.5h-3.306Zm-.373-1h2.679V2.5c0-.827-.673-1.5-1.5-1.5h-7c-.827,0-1.5.673-1.5,1.5v5.5h2.721l2.262,1.993,2.339-1.993Zm7.179,11h-5c-1.379,0-2.5,1.122-2.5,2.5v2.5h1v-2.5c0-.827.673-1.5,1.5-1.5h5c.827,0,1.5.673,1.5,1.5v2.5h1v-2.5c0-1.378-1.121-2.5-2.5-2.5Zm-2.5-8c1.654,0,3,1.346,3,3s-1.346,3-3,3-3-1.346-3-3,1.346-3,3-3Zm-2,3c0,1.103.897,2,2,2s2-.897,2-2-.897-2-2-2-2,.897-2,2Z"/>
         `;
         svgElement.classList.add('custom-svg-icon');
     
@@ -379,7 +403,10 @@ function addBookingBtnMobile () {
     
         // Clear the button's content
         buttonElement.innerHTML = "";
-    
+
+        buttonElement.addEventListener('click', () => {
+            window.location.href = FLAWLESS_BOOK_PAGE;
+        });
         // Add the container div to the button
         buttonElement.appendChild(containerDiv);
     
@@ -398,8 +425,11 @@ function addBookingBtnMobile () {
 // Note: Call function when page loads
 function addHomeBtnMobile () {
     // Create a new button element
-    var newButton = document.createElement("button");
-    newButton.setAttribute("type", "button");
+    // var newButton = document.createElement("button");
+    // newButton.setAttribute("type", "button");
+    
+    var newButton = document.createElement("a");
+    newButton.setAttribute("href", FLAWLESS_HOME_PAGE);
     newButton.classList.add("btn", "main-menu-btn", "d-lg-block", "d-flex", "flex-column", "align-items-center", "btn-link", "btn-sm");
     newButton.setAttribute("data-v-4f3621d4", ""); // Add the data attribute if needed
     
@@ -430,6 +460,24 @@ function addHomeBtnMobile () {
     var container = document.querySelector("div.d-flex.justify-content-around.border-top.pt-2.pr-2");
     var containerFirstChild = container.firstChild;
     container.insertBefore(newButton, containerFirstChild);
+    //redirect user to flawless homepage 
+    buttons.forEach(button => {
+        if (button.textContent.trim() === 'الرئيسية') {
+            button.addEventListener('click', () => {
+                window.location.href = FLAWLESS_HOME_PAGE;
+            });
+        }
+    });
+
+    // Add click event listeners to each button
+    buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            // Toggle the "active" class for the clicked button
+            toggleActiveClass(button);
+        });
+    });
+
+
 }
 
 
@@ -444,24 +492,9 @@ function toggleActiveClass(clickedButton) {
     clickedButton.classList.toggle("active");
 }
 
-// Add click event listeners to each button
-buttons.forEach(function (button) {
-    button.addEventListener("click", function () {
-        // Toggle the "active" class for the clicked button
-        toggleActiveClass(button);
-    });
-});
 
-//redirect user to flawless homepage 
-buttons.forEach(button => {
-    if (button.textContent.trim() === 'الرئيسية') {
-        button.addEventListener('click', () => {
-            window.location.href = FLAWLESS_HOME_PAGE;
-        });
-    }
-});
 
-// Function to add click event listener to the image
+// Function to add click event listener to the logo image 
 // Note: add the function to mutation observer
 function addClickListener() {
     var image = document.querySelector("#portal-sidebar > div > div > div.text-center.text-lg-left > div > div > div > div:nth-child(1) > img");
@@ -474,17 +507,30 @@ function addClickListener() {
 }
 
 // Function to check and hide booking type if it matches the criteria
-function toggleBookingTypeIfNeeded(element, userhasPackage) {
+function toggleBookingTypeIfNeeded(element, bookedSessions) {
     // the text content of the booking type
     var text = element.textContent || element.innerText;
-    // if the booking type is the rest sessions of the main package session  
-    if (text.includes(PACKAGE_SECOND_SESSION) || text.includes(PACKAGE_THIRD_SESSION) || text.includes(PACKAGE_FORTH_SESSION)) {
-        // shows if user booked a package
-        userhasPackage ? element.style.display = 'block' : element.style.display = 'none';
-        console.log("userhasPack value: ", userhasPackage);
-    } else {
+    // Decide visibility based on package and individual session booking status
+    if (text.includes(PACKAGE_SECOND_SESSION)) {
+        !bookedSessions.hasBookedPackageSession ? 
+        element.style.display = 'none' : 
+        element.style.display = bookedSessions.second ? 'none' : 'block';
+
+    } else if (text.includes(PACKAGE_THIRD_SESSION)) {
+        !bookedSessions.hasBookedPackageSession ? 
+        element.style.display = 'none' : 
+        element.style.display = bookedSessions.third ? 'none' : 'block';
+
+    } else if (text.includes(PACKAGE_FORTH_SESSION)) {
+        !bookedSessions.hasBookedPackageSession ? 
+        element.style.display = 'none' : 
+        element.style.display = bookedSessions.fourth ? 'none' : 'block';
+
+    }  else {
         // hide main booking type if user booked a package
-        userhasPackage ? element.style.display = 'none': element.style.display = 'block';
+        bookedSessions.hasBookedPackageSession ? 
+        element.style.display = 'none' : 
+        element.style.display = 'block';
     }
 }
 
@@ -493,20 +539,38 @@ function toggleBookingTypeIfNeeded(element, userhasPackage) {
 // Note: add the function to mutation observer
 function checkAppointmentCards() {
     const appointmentCards = document.querySelectorAll(".appointment-card");
-    let hasBookedPackageSession = false;
     const bookingTypes = document.querySelectorAll('.booking-type');
+    
+    // Initialize an object to track booked sessions
+    let bookedSessions = {
+        hasBookedPackageSession: false,
+        second: false,
+        third: false,
+        fourth: false
+    };
 
     appointmentCards.forEach(card => {
         const cardText = card.textContent.trim();
         // user have booked the package session
         if (cardText.includes(PACKAGE_SESSION_TYPE_TITLE)) {
-            console.log("user have booked the package sessions");
-            hasBookedPackageSession = true;
+            bookedSessions.hasBookedPackageSession = true;
+        }
+        // Check for individual session bookings
+        if (cardText.includes(PACKAGE_SECOND_SESSION)) {
+            bookedSessions.second = true;
+        }
+        // Check for individual session bookings
+        if (cardText.includes(PACKAGE_THIRD_SESSION)) {
+            bookedSessions.third = true;
+        }
+        // Check for individual session bookings
+        if (cardText.includes(PACKAGE_FORTH_SESSION)) {
+            bookedSessions.fourth = true;
         }
     });
     // Toggle display based on whether a package session has been booked
     bookingTypes.forEach(bookingType => {
-        toggleBookingTypeIfNeeded(bookingType, hasBookedPackageSession);
+        toggleBookingTypeIfNeeded(bookingType, bookedSessions);
     });
 }
 
@@ -518,6 +582,7 @@ function observeDOM() {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
                 // New nodes have been added to the DOM
                 addClickListener();
+                redirectToSignIn();
             }
         });
 
@@ -527,14 +592,9 @@ function observeDOM() {
         updateTimeContainerSmall();
         updateTimeContainerLarge();
 
-        // redirectToSignIn();
-
         checkAppointmentCards();
-        handleEmailButtons(EMAIL_BUTTON_LIST);
+        handleEmailButtons();
         findScheduleSuccessMsg();
-
-
-        console.log("DOM updated");
 
         // Add a window resize event listener to update the container when the screen size changes
         window.addEventListener("resize", () => {
@@ -548,7 +608,7 @@ function observeDOM() {
         });
         
     });
-
+    
     var config = { childList: true, subtree: true };
     observer.observe(document.body, config);
 }
@@ -556,6 +616,8 @@ function observeDOM() {
 // Call the observeDOM function to start observing DOM changes
 observeDOM();
 
-// call functions when the page loads
-addHomeBtnMobile();
+processToNextSessionType();
+
+// the call order is important -> addBookingBtnMobile() should be called before addHomeBtnMobile()
 addBookingBtnMobile();
+addHomeBtnMobile();
