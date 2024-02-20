@@ -29,6 +29,7 @@ const PACKAGE_THIRD_SESSION = "جلسة ٣ من الباقة (جلسة النم�
 
 const PACKAGE_FORTH_SESSION = "جلسة ٤ من الباقة (جلسة المتابعة)";
 
+const DISCOUNT = "15%-"
 
 // let packagebookingTypes = document.querySelectorAll('.booking-type');
 
@@ -229,15 +230,16 @@ function redirectToSignIn() {
     // Query both wide and mobile screen buttons
     const wideScreenBtns = document.querySelectorAll('.navbar-nav .header-menu button');
     const mobileScreenBtns = document.querySelectorAll('button.main-menu-btn');
-
+    const startBoking = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.mt-4.container > div:nth-child(1) > div:nth-child(3) > div > div > div > div > div:nth-child(1) > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div > p") == null ? `<p data-v-7cf1270e="" class="text-center"></p>` : document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.mt-4.container > div:nth-child(1) > div:nth-child(3) > div > div > div > div > div:nth-child(1) > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div > p");
     // Merge NodeLists into a single array for iteration
+    console.log("test", startBoking === null ? true : false)
     const navbarBtns = [...wideScreenBtns, ...mobileScreenBtns];
 
     bookingTypes.forEach(bookingType => {
-        if (bookingType.textContent.includes(PACKAGE_SESSION_TYPE_TITLE) && !isSignedIn) {
-            let button = bookingType.querySelector('button'); 
+        if (bookingType.textContent.includes(PACKAGE_SESSION_TYPE_TITLE) && (!isSignedIn && startBoking === null)) {
+            let button = bookingType.querySelector('button');
             button.addEventListener('click', (event) => {
-                event.preventDefault(); 
+                event.preventDefault();
                 navbarBtns.forEach(btn => {
                     if (btn.textContent.trim() === "حسابي" || btn.textContent.trim() === "My Account") {
                         btn.click();
@@ -255,13 +257,13 @@ function redirectToSignIn() {
 function findScheduleSuccessMsg() {
     let scheduleSuccessMsg =
         document.querySelector("#__layout > div > div > div > div > div > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > div > div > div > div:nth-child(2)")
-    
+
     // Perform actions based on the booked session type or any other conditions
     if (scheduleSuccessMsg) {
         if (scheduleSuccessMsg.textContent.includes("تم الحجز بنجاح")) {
-    
+
             let bookedSessionType = document.querySelector("#__layout > div > div > div > div > div > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > div > div > div > ul > li:nth-child(1)");
-    
+
             checkAndAddLink(bookedSessionType);
         }
     }
@@ -367,10 +369,10 @@ function initializeNavbarImageClick() {
 
 // Function to add booking button for mobile view
 // Note: Call function when page loads
-function addBookingBtnMobile () {
+function addBookingBtnMobile() {
     // Select the SVG element
     var svgElement = document.querySelector("#__layout > div > div > div > div > div > div.bottom-menu > div > button.btn.main-menu-btn.d-lg-block.d-flex.flex-column.align-items-center.btn-link.btn-sm.active > svg");
-    
+
     // Check if the SVG element is found
     if (svgElement) {
         // Replace the current SVG content with the new SVG code
@@ -378,29 +380,29 @@ function addBookingBtnMobile () {
             <path d="m10,21.5v2.5h-1v-2.5c0-.827-.673-1.5-1.5-1.5H2.5c-.827,0-1.5.673-1.5,1.5v2.5H0v-2.5c0-1.378,1.121-2.5,2.5-2.5h5c1.379,0,2.5,1.122,2.5,2.5ZM2,14c0-1.654,1.346-3,3-3s3,1.346,3,3-1.346,3-3,3-3-1.346-3-3Zm1,0c0,1.103.897,2,2,2s2-.897,2-2-.897-2-2-2-2,.897-2,2Zm11.694-5l-2.02,1.746c-.19.169-.432.254-.673.254-.243,0-.487-.086-.682-.259l-1.977-1.741h-3.344V2.5c0-1.378,1.121-2.5,2.5-2.5h7c1.379,0,2.5,1.122,2.5,2.5v6.5h-3.306Zm-.373-1h2.679V2.5c0-.827-.673-1.5-1.5-1.5h-7c-.827,0-1.5.673-1.5,1.5v5.5h2.721l2.262,1.993,2.339-1.993Zm7.179,11h-5c-1.379,0-2.5,1.122-2.5,2.5v2.5h1v-2.5c0-.827.673-1.5,1.5-1.5h5c.827,0,1.5.673,1.5,1.5v2.5h1v-2.5c0-1.378-1.121-2.5-2.5-2.5Zm-2.5-8c1.654,0,3,1.346,3,3s-1.346,3-3,3-3-1.346-3-3,1.346-3,3-3Zm-2,3c0,1.103.897,2,2,2s2-.897,2-2-.897-2-2-2-2,.897-2,2Z"/>
         `;
         svgElement.classList.add('custom-svg-icon');
-    
+
     }
     // Select the button element
     var buttonElement = document.querySelector("button.btn.main-menu-btn.d-lg-block.d-flex.flex-column.align-items-center.btn-link.btn-sm.active");
-    
+
     // Check if the button element is found
     if (buttonElement) {
         // Create a container div element
         var containerDiv = document.createElement("div");
-    
+
         // Add the SVG element to the container
         var svgElement = document.querySelector("#__layout > div > div > div > div > div > div.bottom-menu > div > button.btn.main-menu-btn.d-lg-block.d-flex.flex-column.align-items-center.btn-link.btn-sm.active > svg");
         if (svgElement) {
             containerDiv.appendChild(svgElement.cloneNode(true));
         }
-    
+
         // Create a text element with the desired text
         var textElement = document.createElement("span");
         textElement.innerText = "الحجز";
-    
+
         // Add the text element to the container
         containerDiv.appendChild(textElement);
-    
+
         // Clear the button's content
         buttonElement.innerHTML = "";
 
@@ -409,7 +411,7 @@ function addBookingBtnMobile () {
         });
         // Add the container div to the button
         buttonElement.appendChild(containerDiv);
-    
+
         // Apply CSS styles to the container div for styling
         containerDiv.style.display = "flex";
         containerDiv.style.flexDirection = "column";
@@ -423,16 +425,16 @@ function addBookingBtnMobile () {
 
 // Function to add home button for mobile view
 // Note: Call function when page loads
-function addHomeBtnMobile () {
+function addHomeBtnMobile() {
     // Create a new button element
     // var newButton = document.createElement("button");
     // newButton.setAttribute("type", "button");
-    
+
     var newButton = document.createElement("a");
     newButton.setAttribute("href", FLAWLESS_HOME_PAGE);
     newButton.classList.add("btn", "main-menu-btn", "d-lg-block", "d-flex", "flex-column", "align-items-center", "btn-link", "btn-sm");
     newButton.setAttribute("data-v-4f3621d4", ""); // Add the data attribute if needed
-    
+
     // Create the SVG element for the new button with viewBox attribute
     var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
@@ -443,19 +445,19 @@ function addHomeBtnMobile () {
     svgElement.setAttribute("height", "24");
     svgElement.setAttribute("fill", "currentColor");
     svgElement.classList.add("bi-house", "b-icon", "bi", "custom-svg-icon"); // Add necessary classes for styling
-    
+
     // Create the path element for the provided SVG
     var pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
     pathElement.setAttribute("d", "M23.045,8.035l-2.045-1.607V2h-1v3.641L13.545,.567c-.910-.715-2.182-.715-3.090,0L.955,8.035c-.607,.477-.955,1.193-.955,1.965v14H8V14.5c0-.827,.673-1.5,1.5-1.5h5c.827,0,1.5,.673,1.5,1.5v9.5h8V10c0-.772-.348-1.489-.955-1.965Zm-.045,14.965h-6V14.5c0-1.378-1.121-2.5-2.5-2.5h-5c-1.379,0-2.5,1.122-2.5,2.5v8.5H1V10c0-.463,.209-.893,.572-1.179L11.072,1.353c.547-.429,1.309-.429,1.855,0l9.5,7.468c.363,.286,.572,.716,.572,1.179v13Z");
-    
+
     // Append the path to the SVG and the SVG to the button
     svgElement.appendChild(pathElement);
     newButton.appendChild(svgElement);
-    
+
     // Set the text of the new button
     var buttonText = document.createTextNode("الرئيسية");
     newButton.appendChild(buttonText);
-    
+
     // Insert the new button to the left of the existing buttons
     var container = document.querySelector("div.d-flex.justify-content-around.border-top.pt-2.pr-2");
     var containerFirstChild = container.firstChild;
@@ -511,26 +513,27 @@ function toggleBookingTypeIfNeeded(element, bookedSessions) {
     // the text content of the booking type
     var text = element.textContent || element.innerText;
     // Decide visibility based on package and individual session booking status
-    if (text.includes(PACKAGE_SECOND_SESSION)) {
-        !bookedSessions.hasBookedPackageSession ? 
-        element.style.display = 'none' : 
-        element.style.display = bookedSessions.second ? 'none' : 'block';
-
-    } else if (text.includes(PACKAGE_THIRD_SESSION)) {
-        !bookedSessions.hasBookedPackageSession ? 
-        element.style.display = 'none' : 
-        element.style.display = bookedSessions.third ? 'none' : 'block';
-
-    } else if (text.includes(PACKAGE_FORTH_SESSION)) {
-        !bookedSessions.hasBookedPackageSession ? 
-        element.style.display = 'none' : 
-        element.style.display = bookedSessions.fourth ? 'none' : 'block';
-
-    }  else {
-        // hide main booking type if user booked a package
-        bookedSessions.hasBookedPackageSession ? 
-        element.style.display = 'none' : 
-        element.style.display = 'block';
+    // If all package sessions are booked, show only the main sessions
+    if (bookedSessions.allBooked) {
+        if (text.includes(PACKAGE_SECOND_SESSION) || text.includes(PACKAGE_THIRD_SESSION) || text.includes(PACKAGE_FORTH_SESSION)) {
+            // All package sessions are booked, hide them
+            element.style.display = 'none';
+        } else {
+            // Since all package sessions are booked, show main sessions
+            element.style.display = 'block';
+        }
+    } else {
+        // Handle visibility when not all package sessions are booked
+        if (text.includes(PACKAGE_SECOND_SESSION)) {
+            element.style.display = bookedSessions.hasPackage && !bookedSessions.second ? 'block' : 'none';
+        } else if (text.includes(PACKAGE_THIRD_SESSION)) {
+            element.style.display = bookedSessions.hasPackage && !bookedSessions.third ? 'block' : 'none';
+        } else if (text.includes(PACKAGE_FORTH_SESSION)) {
+            element.style.display = bookedSessions.hasPackage && !bookedSessions.fourth ? 'block' : 'none';
+        } else {
+            // For main sessions, reverse the logic: hide if package is booked
+            element.style.display = bookedSessions.hasPackage ? 'none' : 'block';
+        }
     }
 }
 
@@ -540,34 +543,39 @@ function toggleBookingTypeIfNeeded(element, bookedSessions) {
 function checkAppointmentCards() {
     const appointmentCards = document.querySelectorAll(".appointment-card");
     const bookingTypes = document.querySelectorAll('.booking-type');
-    
+
     // Initialize an object to track booked sessions
     let bookedSessions = {
-        hasBookedPackageSession: false,
+        hasPackage: false,
         second: false,
         third: false,
-        fourth: false
+        fourth: false,
+        allBooked: false
     };
 
     appointmentCards.forEach(card => {
         const cardText = card.textContent.trim();
         // user have booked the package session
-        if (cardText.includes(PACKAGE_SESSION_TYPE_TITLE)) {
-            bookedSessions.hasBookedPackageSession = true;
+        if (cardText.includes(PACKAGE_SESSION_TYPE_TITLE) && !cardText.includes("الموعد ملغي")) {
+            bookedSessions.hasPackage = true;
         }
         // Check for individual session bookings
-        if (cardText.includes(PACKAGE_SECOND_SESSION)) {
+        if (cardText.includes(PACKAGE_SECOND_SESSION) && !cardText.includes("الموعد ملغي")) {
             bookedSessions.second = true;
         }
         // Check for individual session bookings
-        if (cardText.includes(PACKAGE_THIRD_SESSION)) {
+        if (cardText.includes(PACKAGE_THIRD_SESSION) && !cardText.includes("الموعد ملغي")) {
             bookedSessions.third = true;
         }
         // Check for individual session bookings
-        if (cardText.includes(PACKAGE_FORTH_SESSION)) {
+        if (cardText.includes(PACKAGE_FORTH_SESSION) && !cardText.includes("الموعد ملغي")) {
             bookedSessions.fourth = true;
+            if (cardText.includes("انتهى الموعد")) {
+                bookedSessions.allBooked = true;
+            }
         }
     });
+    bookedSessions.allBooked = bookedSessions.hasPackage && bookedSessions.second && bookedSessions.third && bookedSessions.fourth;
     // Toggle display based on whether a package session has been booked
     bookingTypes.forEach(bookingType => {
         toggleBookingTypeIfNeeded(bookingType, bookedSessions);
@@ -575,27 +583,116 @@ function checkAppointmentCards() {
 }
 
 
+// Function to scroll down on mobile after choose time 
+function scrolldown() {
+    let targetElement = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.container > div:nth-child(1) > div:nth-child(2) > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div.p-0 > div:nth-child(1) > div > label")
+    if (targetElement) {
+        const additionalOffset = 100; // Additional pixels to scroll down
+        const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+
+        window.scrollTo({
+            top: elementPosition + additionalOffset, // Add more to the final position
+            behavior: 'smooth'
+        });
+    }
+}
+
+function redirectToWhatsApp() {
+    // Select all buttons with the specified class
+    const buttons = document.querySelectorAll('button.btn.outline-btn-whatsapp.btn-outline-success');
+
+    // Add a click event listener to each button
+    buttons.forEach(button => {
+        // Clone the button
+        const clonedButton = button.cloneNode(true);
+
+        // Attach new click event listener to the cloned button
+        clonedButton.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent any default form submission or navigation
+            event.stopPropagation(); // Stop the event from propagating to parent elements
+            window.open('https://wa.me/966508151474', '_blank'); // Open the WhatsApp link in a new tab
+        });
+
+        // Replace the original button with the cloned button
+        button.parentNode.replaceChild(clonedButton, button);
+
+
+    });
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            timeout = null;
+            func.apply(this, arguments);
+        }, wait);
+    };
+}
+
+function addDiscountBadge(card) {
+    // Check if the card already has a discount badge
+    if (!card.querySelector('.badge-discount')) {
+        // Create the badge element
+        const badge = document.createElement('span');
+        badge.classList.add('badge-discount');
+        badge.textContent = DISCOUNT; // Text for the badge
+        badge.style.position = 'absolute';
+        badge.style.top = '-15px'; // Adjust based on your design
+        badge.style.right = '-15px'; // Adjust based on your design
+        badge.style.backgroundColor = 'red'; // Set background color to red
+        badge.style.color = 'white';
+        badge.style.padding = '5px 5px';
+        badge.style.borderRadius = '50%'; // Make the badge circular
+        badge.style.fontSize = '12px';
+
+        // Append the badge to the card
+        card.appendChild(badge);
+    }
+}
+
+
+
+
 // Function to observe changes in the DOM
 function observeDOM() {
+    const debouncedRedirect = debounce(redirectToWhatsApp, 2000); // Adjust delay as needed
     var observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
                 // New nodes have been added to the DOM
                 addClickListener();
                 redirectToSignIn();
+                if (window.innerWidth <= 768) {
+                    scrolldown();
+                }
             }
+         mutation.addedNodes.forEach((node) => {
+                // Check if the added node is a .booking-type card or contains any
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    if (node.classList.contains('booking-type')) {
+                        // Directly added .booking-type card
+                        addDiscountBadge(node);
+                    } else if (node.querySelector('.booking-type')) {
+                        // Container with .booking-type cards added
+                        node.querySelectorAll('.booking-type').forEach(addDiscountBadge);
+                    }
+                }
+            });
         });
 
+
+        debouncedRedirect();
         initializeImageClicks();
         initializeNavbarImageClick(); // Call this again if dynamic content might include the navbar image
         // Initial call to updateTimeContainer for both small and large screens
         updateTimeContainerSmall();
         updateTimeContainerLarge();
-
+       
         checkAppointmentCards();
         handleEmailButtons();
         findScheduleSuccessMsg();
-
         // Add a window resize event listener to update the container when the screen size changes
         window.addEventListener("resize", () => {
             const screenWidth = window.innerWidth;
@@ -606,9 +703,9 @@ function observeDOM() {
                 updateTimeContainerLarge();
             }
         });
-        
+
     });
-    
+
     var config = { childList: true, subtree: true };
     observer.observe(document.body, config);
 }
