@@ -79,10 +79,8 @@ function updateTimeContainerSmall() {
         if (textNode && textNode.nodeType === Node.TEXT_NODE) {
             textNode.nodeValue = PACKAGE_SESSION_TYPE_DURATION;
         } else {
-            console.log("Expected text node not found next to the SVG (Small Screen).");
         }
     } else {
-        console.log("Time container not found for small screen");
     }
 }
 
@@ -98,10 +96,8 @@ function updateTimeContainerLarge() {
         if (textNode && textNode.nodeType === Node.TEXT_NODE) {
             textNode.nodeValue = PACKAGE_SESSION_TYPE_DURATION;
         } else {
-            console.log("Expected text node not found next to the SVG (Large Screen).");
         }
     } else {
-        console.log("Time container not found for large screen");
     }
 }
 
@@ -117,10 +113,8 @@ function updateTimeContainerSmall2() {
         if (textNode && textNode.nodeType === Node.TEXT_NODE) {
             textNode.nodeValue = PACKAGE_SESSION2_TYPE_DURATION;
         } else {
-            console.log("Expected text node not found next to the SVG (Small Screen).");
         }
     } else {
-        console.log("Time container not found for small screen");
     }
 }
 
@@ -136,10 +130,8 @@ function updateTimeContainerLarge2() {
         if (textNode && textNode.nodeType === Node.TEXT_NODE) {
             textNode.nodeValue = PACKAGE_SESSION2_TYPE_DURATION;
         } else {
-            console.log("Expected text node not found next to the SVG (Large Screen).");
         }
     } else {
-        console.log("Time container not found for large screen");
     }
 }
 
@@ -154,10 +146,8 @@ function updateTimeContainer() {
         if (textNode && textNode.nodeType === Node.TEXT_NODE) {
             textNode.nodeValue = PACKAGE_SESSION_TYPE_DURATION;
         } else {
-            console.log("Expected text node not found next to the SVG.");
         }
     } else {
-        console.log("Time container not found");
     }
 }
 
@@ -264,7 +254,6 @@ function findPhoneNumber() {
                 if (spanElement) {
                     // Extract the text content of the <span> element
                     phoneNumber = spanElement.textContent.trim();
-                    console.log("Phone Number:", phoneNumber);
                     return phoneNumber;
                 }
             }
@@ -281,7 +270,6 @@ function redirectToSignIn() {
     const mobileScreenBtns = document.querySelectorAll('button.main-menu-btn');
     const startBoking = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.mt-4.container > div:nth-child(1) > div:nth-child(3) > div > div > div > div > div:nth-child(1) > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div > p") == null ? `<p data-v-7cf1270e="" class="text-center"></p>` : document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.mt-4.container > div:nth-child(1) > div:nth-child(3) > div > div > div > div > div:nth-child(1) > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div > p");
     // Merge NodeLists into a single array for iteration
-    console.log("test", startBoking === null ? true : false)
     const navbarBtns = [...wideScreenBtns, ...mobileScreenBtns];
 
     bookingTypes.forEach(bookingType => {
@@ -295,9 +283,7 @@ function redirectToSignIn() {
                     }
                 });
             });
-            console.log("User is not signed in: ", findPhoneNumber());
         }
-        console.log("User is signed in: ", findPhoneNumber());
     });
 }
 
@@ -312,12 +298,12 @@ function findScheduleSuccessMsg() {
         if (scheduleSuccessMsg.textContent.includes("تم الحجز بنجاح")) {
 
             // let bookedSessionType = document.querySelector("#__layout > div > div > div > div > div > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > div > div > div > ul > li:nth-child(1)");
-        // Query both wide and mobile screen buttons
-        const wideScreenBtns = document.querySelectorAll('.navbar-nav .header-menu button');
-        const mobileScreenBtns = document.querySelectorAll('button.main-menu-btn');
+            // Query both wide and mobile screen buttons
+            const wideScreenBtns = document.querySelectorAll('.navbar-nav .header-menu button');
+            const mobileScreenBtns = document.querySelectorAll('button.main-menu-btn');
 
-        // Merge NodeLists into a single array for iteration
-        const navbarBtns = [...wideScreenBtns, ...mobileScreenBtns];
+            // Merge NodeLists into a single array for iteration
+            const navbarBtns = [...wideScreenBtns, ...mobileScreenBtns];
 
             setTimeout(() => {
                 navbarBtns.forEach(btn => {
@@ -577,9 +563,9 @@ function addClickListener() {
 function toggleBookingTypeIfNeeded(element, bookedSessionsByPackage) {
     var text = element.textContent || element.innerText;
 
- // Initially, assume the element should be shown
+    // Initially, assume the element should be shown
     element.style.display = 'block';
-    
+
     // Loop through each package to apply visibility rules
     Object.keys(bookedSessionsByPackage).forEach(packageKey => {
         var sessionNames = PACKAGE_TYPES[packageKey]; // Access session names for the current package
@@ -591,11 +577,11 @@ function toggleBookingTypeIfNeeded(element, bookedSessionsByPackage) {
             if (text.includes(sessionNames.SECOND_SESSION) || text.includes(sessionNames.THIRD_SESSION) ||
                 text.includes(sessionNames.FOURTH_SESSION) || (totalPackageSessions >= 4 && text.includes(sessionNames.FIFTH_SESSION))) {
                 // All package sessions are booked, hide them
-            element.style.display = 'none';
-        } else {
-            // Since all package sessions are booked, show main sessions
-            element.style.display = 'block';
-        }
+                element.style.display = 'none';
+            } else {
+                // Since all package sessions are booked, show main sessions
+                element.style.display = 'block';
+            }
         } else {
             if (text.includes(sessionNames.SECOND_SESSION)) {
                 element.style.display = bookedSessions.hasPackage && !bookedSessions.second ? 'block' : 'none';
@@ -605,11 +591,11 @@ function toggleBookingTypeIfNeeded(element, bookedSessionsByPackage) {
                 element.style.display = bookedSessions.hasPackage && !bookedSessions.fourth ? 'block' : 'none';
             } else if (totalPackageSessions >= 4 && text.includes(sessionNames.FIFTH_SESSION)) {
                 element.style.display = bookedSessions.hasPackage && !bookedSessions.fifth ? 'block' : 'none';
-            }else {
-            // For main sessions, reverse the logic: hide if any package is booked
-            if (bookedSessions.hasPackage) {
-                element.style.display = 'none';
-            }
+            } else {
+                // For main sessions, reverse the logic: hide if any package is booked
+                if (bookedSessions.hasPackage) {
+                    element.style.display = 'none';
+                }
             }
         }
     });
@@ -653,18 +639,17 @@ function checkAppointmentCards() {
             const sessionNames = PACKAGE_TYPES[currentPackageKey];
             bookedSessionsByPackage[currentPackageKey].hasPackage = true;
 
-            Object.keys(sessionNames).forEach(sessionKey => {
-                  const sessionName = sessionNames[sessionKey];
-                  console.log(sessionName);
-                  console.log(cardText);
+            // Get all keys as an array
+            const keys = Object.keys(sessionNames);
+            keys.forEach((sessionKey) => {
+                const sessionName = sessionNames[sessionKey];
                 if (cardText.includes(sessionName) && !cardText.includes("الموعد ملغي")) {
                     // Convert sessionKey from format 'SECOND_SESSION' to 'second'
                     const simpleKey = sessionKey.toLowerCase().replace("_session", "");
-                    console.log(simpleKey);
                     bookedSessionsByPackage[currentPackageKey][simpleKey] = true;
                 }
-
-                if (cardText.includes("انتهى الموعد")) {
+                // Access the last key
+                if (cardText.includes("انتهى الموعد") && cardText.includes(sessionNames[keys[keys.length - 1]])) {
                     bookedSessionsByPackage[currentPackageKey].allBooked = true;
                 }
             });
@@ -861,10 +846,10 @@ function observeDOM() {
         initializeImageClicks();
         initializeNavbarImageClick(); // Call this again if dynamic content might include the navbar image
         // Initial call to updateTimeContainer for both small and large screens
-         updateTimeContainerSmall();
-         updateTimeContainerLarge();
-         updateTimeContainerSmall2();
-         updateTimeContainerLarge2();
+        updateTimeContainerSmall();
+        updateTimeContainerLarge();
+        updateTimeContainerSmall2();
+        updateTimeContainerLarge2();
         checkAppointmentCards();
         handleEmailButtons();
         findScheduleSuccessMsg();
@@ -873,12 +858,12 @@ function observeDOM() {
             const screenWidth = window.innerWidth;
 
             if (screenWidth <= 768) {
-                 updateTimeContainerSmall();
-                 updateTimeContainerSmall2();
+                updateTimeContainerSmall();
+                updateTimeContainerSmall2();
 
             } else {
-                 updateTimeContainerLarge();
-                 updateTimeContainerLarge2();
+                updateTimeContainerLarge();
+                updateTimeContainerLarge2();
 
             }
         });
