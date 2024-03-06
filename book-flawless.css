@@ -1,0 +1,140 @@
+#__layout
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div.mt-4.container
+  > div:nth-child(1)
+  > div:nth-child(1)
+  > div:nth-child(2)
+  > div
+  > div
+  > div
+  > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay
+  > div
+  > span
+  > form
+  > div
+  > div
+  > div
+  > div:nth-child(2)
+  > div
+  > div
+  > div:nth-child(1)
+  > div:has(.booking-type) {
+  max-width: 100% !important;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+#__layout
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div.mt-4.container
+  > div:nth-child(1)
+  > div:nth-child(1)
+  > div:nth-child(2)
+  > div
+  > div
+  > div
+  > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay
+  > div
+  > span
+  > form
+  > div
+  > div
+  > div
+  > div:nth-child(2)
+  > div:has(.booking-type) {
+  max-width: 100% !important;
+}
+
+#__layout
+  > div
+  > div
+  > div
+  > div
+  > div
+  > div.bg-white
+  > div
+  > nav
+  > div.navbar-brand.m-0
+  > span
+  > img {
+  cursor: pointer;
+}
+/* Add a class selector for the SVG element */
+.custom-svg-icon {
+  transform: translate(-5px, -5px); /* Adjust the values to move left */
+}
+
+#whatsapp-sidebar {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: #1d9a4e;
+  padding: 10px;
+  border-radius: 5px 0 0 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+#whatsapp-sidebar:hover {
+  text-decoration: none;
+}
+
+#whatsapp-link {
+  display: block;
+  text-align: center;
+}
+
+#whatsapp-icon {
+  width: 40px;
+  height: 40px;
+}
+.whatsapp-text {
+  text-decoration: none; /* Remove underline */
+  color: white; /* Text color */
+  transition: color 0.3s; /* Add transition for smooth color change */
+}
+
+.whatsapp-text:hover {
+  color: darkergreen; /* Change text color on hover */
+}
+/* Media query for screens with a maximum width of 768px (adjust as needed) */
+@media (max-width: 768px) {
+  #whatsapp-sidebar {
+    width: 40px; /* Adjust the width for smaller screens */
+    height: 40px; /* Adjust the height for smaller screens */
+    /* Add any other adjustments for smaller screens */
+  }
+
+  /* Hide the text on smaller screens */
+  #whatsapp-sidebar span {
+    display: none;
+  }
+}
+
+.booking-type {
+  position: relative; /* Needed for absolute positioning of the badge within the card */
+  width: 500px; /* Adjust this width based on your layout needs */
+  place-items: center; /* Shortcut for align-items and justify-items */
+  margin: 0 auto; /* Center each booking-type if they are block-level elements */
+
+  /* Other styling for your cards */
+}
+
+.badge-discount {
+  position: absolute;
+  top: 100px; /* Adjust based on your design */
+  right: 100px; /* Adjust based on your design */
+  background-color: #4caf50; /* Example: green background */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
