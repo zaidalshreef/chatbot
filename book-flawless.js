@@ -311,9 +311,22 @@ function findScheduleSuccessMsg() {
     if (scheduleSuccessMsg) {
         if (scheduleSuccessMsg.textContent.includes("تم الحجز بنجاح")) {
 
-            let bookedSessionType = document.querySelector("#__layout > div > div > div > div > div > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > div > div > div > ul > li:nth-child(1)");
+            // let bookedSessionType = document.querySelector("#__layout > div > div > div > div > div > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > div > div > div > ul > li:nth-child(1)");
+        // Query both wide and mobile screen buttons
+        const wideScreenBtns = document.querySelectorAll('.navbar-nav .header-menu button');
+        const mobileScreenBtns = document.querySelectorAll('button.main-menu-btn');
 
-            checkAndAddLink(bookedSessionType);
+        // Merge NodeLists into a single array for iteration
+        const navbarBtns = [...wideScreenBtns, ...mobileScreenBtns];
+
+            setTimeout(() => {
+                navbarBtns.forEach(btn => {
+                    if (btn.textContent.trim() === "الرئيسية" || btn.textContent.trim() === "Home") {
+                        btn.click();
+                    }
+                });
+            }, 2000);
+            // checkAndAddLink(bookedSessionType);
         }
     }
 }
@@ -321,6 +334,7 @@ function findScheduleSuccessMsg() {
 /**
  * Redirects the user to the home page and clicks on the specified session type.
  */
+/*
 function clickTheNextSession(navbarBtns, toSessionType) {
     // Set local storage to indicate the session type to click on after redirect
     localStorage.setItem('nextSessionType', toSessionType);
@@ -334,7 +348,8 @@ function clickTheNextSession(navbarBtns, toSessionType) {
         });
     }, 2000);
 }
-
+*/
+/*
 function processToNextSessionType() {
     const toSessionType = localStorage.getItem('nextSessionType');
     if (toSessionType) {
@@ -352,7 +367,8 @@ function processToNextSessionType() {
         });
     }
 }
-
+*/
+/*
 // Function to check and add the link when the session type matches
 function checkAndAddLink(sessionTypeElement) {
     // Query both wide and mobile screen buttons
@@ -375,7 +391,7 @@ function checkAndAddLink(sessionTypeElement) {
         }
     } else console.log("link added");
 }
-
+*/
 
 
 // Function to add click event listeners to images within .silentbox-item containers
@@ -712,7 +728,7 @@ function debounce(func, wait) {
 
 function addDiscountBadge(card) {
     // Check if the card already has a discount badge
-    if (!card.querySelector('.badge-discount')) {
+    if (!card.querySelector('.badge-discount') && (card.textContent == "باقة اللإنطلاقة" || card.textContent == "باقة الخريج")) {
         // Create the badge element
         const badge = document.createElement('span');
         badge.classList.add('badge-discount');
