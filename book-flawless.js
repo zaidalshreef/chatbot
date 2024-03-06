@@ -12,7 +12,8 @@
     Global variables section
 */
 
-const PACKAGE_SESSION_TYPE_DURATION = " 3 ساعات ونصف";
+const PACKAGE_SESSION_TYPE_DURATION = " 4 جلسات ";
+const PACKAGE_SESSION2_TYPE_DURATION = " 5 جلسات ";
 const PACKAGE_SESSION_TYPE_TITLE = "الباقة المتكاملة للتطور المهني";
 
 const EMAIL_VERIFICATION_MESSAGE = `في حال عدم وصول الرمز على علبة الوارد يرجى التحقق من خلال كتابة "Flawless" في البحث`;
@@ -23,11 +24,22 @@ const FLAWLESS_BOOK_PAGE = "https://book.weflawless.co/"
 
 const PACKAGE_MENTOR = "نواف%20الحربي";
 
-const PACKAGE_SECOND_SESSION = "جلسة ٢ من الباقة (جلسة تطوير المهارات)";
+// Define package types and their session names
+const PACKAGE_TYPES = {
+    PACKAGE1: {
+        SECOND_SESSION: "الجلسة الثانية من باقة خريج",
+        THIRD_SESSION: "الجلسة الثالثة من باقة خريج",
+        FOURTH_SESSION: "الجلسة الرابعة من باقة خريج",
+        FIFTH_SESSION: "الجلسة الخامسة من باقة خريج" // Optional, if applicable
 
-const PACKAGE_THIRD_SESSION = "جلسة ٣ من الباقة (جلسة النمو المهني)";
+    },
+    PACKAGE2: {
+        SECOND_SESSION: "الجلسة الثانية من باقة اللإنطلاقة",
+        THIRD_SESSION: "الجلسة الثالثة من باقة اللإنطلاقة",
+        FOURTH_SESSION: "الجلسة الرابعة من باقة اللإنطلاقة",
+    }
+};
 
-const PACKAGE_FORTH_SESSION = "جلسة ٤ من الباقة (جلسة المتابعة)";
 
 const DISCOUNT = "15%-"
 
@@ -57,7 +69,8 @@ document.body.insertAdjacentHTML('beforeend', whatsappSidebar);
 // Function to update the timeContainer text content for small screens
 // Note: add the function to mutation observer
 function updateTimeContainerSmall() {
-    let timeContainerSmall = document.querySelector("#__layout > div > div > div > div > div > div.container > div:nth-child(1) > div:nth-child(2) > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0");
+    let timeContainerSmall = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.container > div:nth-child(1) > div:nth-child(2) > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(1) > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0");
+    ;
 
     if (timeContainerSmall) {
         let svg = timeContainerSmall.querySelector("svg");
@@ -76,7 +89,7 @@ function updateTimeContainerSmall() {
 // Function to update the timeContainer text content for large screens
 // Note: add the function to mutation observer
 function updateTimeContainerLarge() {
-    let timeContainerLarge = document.querySelector("#__layout > div > div > div > div > div > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0");
+    let timeContainerLarge = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(1) > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0");
 
     if (timeContainerLarge) {
         let svg = timeContainerLarge.querySelector("svg");
@@ -92,11 +105,47 @@ function updateTimeContainerLarge() {
     }
 }
 
+// Function to update the timeContainer text content for small screens
+// Note: add the function to mutation observer
+function updateTimeContainerSmall2() {
+    let timeContainerSmall = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div > div > div:nth-child(2) > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0");
+    ;
+    if (timeContainerSmall) {
+        let svg = timeContainerSmall.querySelector("svg");
+        let textNode = svg ? svg.nextSibling : null;
 
+        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.nodeValue = PACKAGE_SESSION2_TYPE_DURATION;
+        } else {
+            console.log("Expected text node not found next to the SVG (Small Screen).");
+        }
+    } else {
+        console.log("Time container not found for small screen");
+    }
+}
+
+// Function to update the timeContainer text content for large screens
+// Note: add the function to mutation observer
+function updateTimeContainerLarge2() {
+    let timeContainerLarge = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div > div > div:nth-child(2) > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0");
+
+    if (timeContainerLarge) {
+        let svg = timeContainerLarge.querySelector("svg");
+        let textNode = svg ? svg.nextSibling : null;
+
+        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.nodeValue = PACKAGE_SESSION2_TYPE_DURATION;
+        } else {
+            console.log("Expected text node not found next to the SVG (Large Screen).");
+        }
+    } else {
+        console.log("Time container not found for large screen");
+    }
+}
 
 // Function to update the timeContainer text content
 function updateTimeContainer() {
-    let timeContainer = document.querySelector("#__layout > div > div > div > div > div > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div:nth-child(2) > div > div > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0");
+    let timeContainer = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.container > div:nth-child(1) > div:nth-child(2) > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div:nth-child(1) > div > div:nth-child(1) > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0");
 
     if (timeContainer) {
         let svg = timeContainer.querySelector("svg");
@@ -508,79 +557,109 @@ function addClickListener() {
     }
 }
 
-// Function to check and hide booking type if it matches the criteria
-function toggleBookingTypeIfNeeded(element, bookedSessions) {
-    // the text content of the booking type
+// Function to check and hide booking type if it matches the criteria for each package
+function toggleBookingTypeIfNeeded(element, bookedSessionsByPackage) {
     var text = element.textContent || element.innerText;
-    // Decide visibility based on package and individual session booking status
-    // If all package sessions are booked, show only the main sessions
-    if (bookedSessions.allBooked) {
-        if (text.includes(PACKAGE_SECOND_SESSION) || text.includes(PACKAGE_THIRD_SESSION) || text.includes(PACKAGE_FORTH_SESSION)) {
-            // All package sessions are booked, hide them
+
+ // Initially, assume the element should be shown
+    element.style.display = 'block';
+    
+    // Loop through each package to apply visibility rules
+    Object.keys(bookedSessionsByPackage).forEach(packageKey => {
+        var sessionNames = PACKAGE_TYPES[packageKey]; // Access session names for the current package
+        var bookedSessions = bookedSessionsByPackage[packageKey]; // Access booked sessions status for the current package
+        var totalPackageSessions = Object.keys(sessionNames).length; // Determine the total number of sessions for the current package
+
+        // Apply visibility rules based on the booking status of the current package's sessions
+        if (bookedSessions.allBooked) {
+            if (text.includes(sessionNames.SECOND_SESSION) || text.includes(sessionNames.THIRD_SESSION) ||
+                text.includes(sessionNames.FOURTH_SESSION) || (totalPackageSessions >= 4 && text.includes(sessionNames.FIFTH_SESSION))) {
+                // All package sessions are booked, hide them
             element.style.display = 'none';
         } else {
             // Since all package sessions are booked, show main sessions
             element.style.display = 'block';
         }
-    } else {
-        // Handle visibility when not all package sessions are booked
-        if (text.includes(PACKAGE_SECOND_SESSION)) {
-            element.style.display = bookedSessions.hasPackage && !bookedSessions.second ? 'block' : 'none';
-        } else if (text.includes(PACKAGE_THIRD_SESSION)) {
-            element.style.display = bookedSessions.hasPackage && !bookedSessions.third ? 'block' : 'none';
-        } else if (text.includes(PACKAGE_FORTH_SESSION)) {
-            element.style.display = bookedSessions.hasPackage && !bookedSessions.fourth ? 'block' : 'none';
         } else {
-            // For main sessions, reverse the logic: hide if package is booked
-            element.style.display = bookedSessions.hasPackage ? 'none' : 'block';
+            if (text.includes(sessionNames.SECOND_SESSION)) {
+                element.style.display = bookedSessions.hasPackage && !bookedSessions.second ? 'block' : 'none';
+            } else if (text.includes(sessionNames.THIRD_SESSION)) {
+                element.style.display = bookedSessions.hasPackage && !bookedSessions.third ? 'block' : 'none';
+            } else if (text.includes(sessionNames.FOURTH_SESSION)) {
+                element.style.display = bookedSessions.hasPackage && !bookedSessions.fourth ? 'block' : 'none';
+            } else if (totalPackageSessions >= 4 && text.includes(sessionNames.FIFTH_SESSION)) {
+                element.style.display = bookedSessions.hasPackage && !bookedSessions.fifth ? 'block' : 'none';
+            }else {
+            // For main sessions, reverse the logic: hide if any package is booked
+            if (bookedSessions.hasPackage) {
+                element.style.display = 'none';
+            }
+            }
         }
-    }
+    });
 }
 
 
-// check if the user have booked the package sessions
-// Note: add the function to mutation observer
 function checkAppointmentCards() {
     const appointmentCards = document.querySelectorAll(".appointment-card");
     const bookingTypes = document.querySelectorAll('.booking-type');
 
-    // Initialize an object to track booked sessions
-    let bookedSessions = {
-        hasPackage: false,
-        second: false,
-        third: false,
-        fourth: false,
-        allBooked: false
+    let bookedSessionsByPackage = {
+        "PACKAGE1": {
+            hasPackage: false,
+            second: false,
+            third: false,
+            fourth: false,
+            fifth: false,
+            allBooked: false
+        },
+        "PACKAGE2": {
+            hasPackage: false,
+            second: false,
+            third: false,
+            fourth: false,
+            fifth: false,
+            allBooked: false
+        }
     };
 
     appointmentCards.forEach(card => {
         const cardText = card.textContent.trim();
-        // user have booked the package session
-        if (cardText.includes(PACKAGE_SESSION_TYPE_TITLE) && !cardText.includes("الموعد ملغي")) {
-            bookedSessions.hasPackage = true;
+        let currentPackageKey = null;
+
+        if (cardText.includes("خريج") && !cardText.includes("الموعد ملغي")) {
+            currentPackageKey = "PACKAGE1";
+        } else if (cardText.includes("اللإنطلاقة") && !cardText.includes("الموعد ملغي")) {
+            currentPackageKey = "PACKAGE2";
         }
-        // Check for individual session bookings
-        if (cardText.includes(PACKAGE_SECOND_SESSION) && !cardText.includes("الموعد ملغي")) {
-            bookedSessions.second = true;
-        }
-        // Check for individual session bookings
-        if (cardText.includes(PACKAGE_THIRD_SESSION) && !cardText.includes("الموعد ملغي")) {
-            bookedSessions.third = true;
-        }
-        // Check for individual session bookings
-        if (cardText.includes(PACKAGE_FORTH_SESSION) && !cardText.includes("الموعد ملغي")) {
-            bookedSessions.fourth = true;
-            if (cardText.includes("انتهى الموعد")) {
-                bookedSessions.allBooked = true;
-            }
+
+        if (currentPackageKey) {
+            const sessionNames = PACKAGE_TYPES[currentPackageKey];
+            bookedSessionsByPackage[currentPackageKey].hasPackage = true;
+
+            Object.keys(sessionNames).forEach(sessionKey => {
+                  const sessionName = sessionNames[sessionKey];
+                  console.log(sessionName);
+                  console.log(cardText);
+                if (cardText.includes(sessionName) && !cardText.includes("الموعد ملغي")) {
+                    // Convert sessionKey from format 'SECOND_SESSION' to 'second'
+                    const simpleKey = sessionKey.toLowerCase().replace("_session", "");
+                    console.log(simpleKey);
+                    bookedSessionsByPackage[currentPackageKey][simpleKey] = true;
+                }
+
+                if (cardText.includes("انتهى الموعد")) {
+                    bookedSessionsByPackage[currentPackageKey].allBooked = true;
+                }
+            });
         }
     });
-    bookedSessions.allBooked = bookedSessions.hasPackage && bookedSessions.second && bookedSessions.third && bookedSessions.fourth;
-    // Toggle display based on whether a package session has been booked
+
     bookingTypes.forEach(bookingType => {
-        toggleBookingTypeIfNeeded(bookingType, bookedSessions);
+        toggleBookingTypeIfNeeded(bookingType, bookedSessionsByPackage);
     });
 }
+
 
 
 // Function to scroll down on mobile after choose time 
@@ -637,20 +716,92 @@ function addDiscountBadge(card) {
         // Create the badge element
         const badge = document.createElement('span');
         badge.classList.add('badge-discount');
-        badge.textContent = DISCOUNT; // Text for the badge
+        badge.textContent = DISCOUNT; // Set the text for the badge
         badge.style.position = 'absolute';
         badge.style.top = '-15px'; // Adjust based on your design
         badge.style.right = '-15px'; // Adjust based on your design
         badge.style.backgroundColor = 'red'; // Set background color to red
         badge.style.color = 'white';
-        badge.style.padding = '5px 5px';
+
+        // Set width and height to ensure the badge is a circle
+        badge.style.width = '35px'; // Width of the badge
+        badge.style.height = '35px'; // Height of the badge
         badge.style.borderRadius = '50%'; // Make the badge circular
+
+        // Center the text within the badge
+        badge.style.display = 'flex';
+        badge.style.alignItems = 'center';
+        badge.style.justifyContent = 'center';
         badge.style.fontSize = '12px';
 
         // Append the badge to the card
         card.appendChild(badge);
     }
 }
+
+
+
+function addToggleVisibilityButtons(card) {
+
+    // Find the element to hide/show within the card
+    const elementToToggle = card.querySelector('.border.rounded .text-left.mt-2');
+
+    if (elementToToggle && !card.querySelector('.toggle-visibility-btn')) {
+        // Hide the element by default
+        elementToToggle.style.display = 'none';
+
+
+
+        // Create a container div for the button to center it
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.textAlign = 'center'; // Center the button
+        buttonContainer.style.marginBottom = '2px'; // Add some margin to the bottom
+        buttonContainer.style.marginTop = '5px'; // Add some margin to the Top
+
+
+        // Create the toggle button
+        const toggleButton = document.createElement('button');
+        toggleButton.textContent = 'مشاهدة التفاصيل'; // Initial button text
+        toggleButton.classList.add('toggle-visibility-btn'); // Add a class to the button for identification
+
+        // Style the toggle button
+        toggleButton.style.backgroundColor = 'white'; // Set background to white
+        toggleButton.style.color = '#add8e6'; // Set text color to light blue
+        toggleButton.style.border = 'none'; // Remove border
+        toggleButton.style.padding = '5px 10px'; // Add some padding
+        toggleButton.style.borderRadius = '5px'; // Optionally round the corners
+        toggleButton.style.cursor = 'pointer'; // Change cursor on hover
+        toggleButton.style.fontWeight = 'bold'; // Make the text a little bit bolder
+
+        // Add event listener to toggle visibility on click
+        toggleButton.addEventListener('click', () => {
+
+            // Prevent the default button action
+            event.preventDefault();
+
+            // Check if the element is currently visible
+            if (elementToToggle.style.display === 'none') {
+                // If the element is hidden, show it
+                elementToToggle.style.display = '';
+                toggleButton.textContent = 'اخفاء التفاصيل'; // Update button text
+
+            } else {
+                // If the element is shown, hide it
+                elementToToggle.style.display = 'none';
+                toggleButton.textContent = 'مشاهدة التفاصيل'; // Update button text
+            }
+        });
+
+        // Append the toggle button to the container div
+        buttonContainer.appendChild(toggleButton);
+
+        // Insert the container div with the button above the element to toggle
+        elementToToggle.parentNode.insertBefore(buttonContainer, elementToToggle);
+    }
+}
+
+
+
 
 
 
@@ -668,15 +819,22 @@ function observeDOM() {
                     scrolldown();
                 }
             }
-         mutation.addedNodes.forEach((node) => {
+            mutation.addedNodes.forEach((node) => {
                 // Check if the added node is a .booking-type card or contains any
                 if (node.nodeType === Node.ELEMENT_NODE) {
                     if (node.classList.contains('booking-type')) {
                         // Directly added .booking-type card
                         addDiscountBadge(node);
+                        // Call the function to add toggle buttons to each .booking-type card
+                        addToggleVisibilityButtons(node);
+                        // Call the function to set up paragraph toggling
+                        //setupParagraphToggle(node);
                     } else if (node.querySelector('.booking-type')) {
                         // Container with .booking-type cards added
                         node.querySelectorAll('.booking-type').forEach(addDiscountBadge);
+                        // Call the function to add toggle buttons to each .booking-type card
+                        node.querySelectorAll('.booking-type').forEach(addToggleVisibilityButtons);
+                        // Call the function to set up paragraph toggling
                     }
                 }
             });
@@ -687,9 +845,10 @@ function observeDOM() {
         initializeImageClicks();
         initializeNavbarImageClick(); // Call this again if dynamic content might include the navbar image
         // Initial call to updateTimeContainer for both small and large screens
-        updateTimeContainerSmall();
-        updateTimeContainerLarge();
-       
+         updateTimeContainerSmall();
+         updateTimeContainerLarge();
+         updateTimeContainerSmall2();
+         updateTimeContainerLarge2();
         checkAppointmentCards();
         handleEmailButtons();
         findScheduleSuccessMsg();
@@ -698,9 +857,13 @@ function observeDOM() {
             const screenWidth = window.innerWidth;
 
             if (screenWidth <= 768) {
-                updateTimeContainerSmall();
+                 updateTimeContainerSmall();
+                 updateTimeContainerSmall2();
+
             } else {
-                updateTimeContainerLarge();
+                 updateTimeContainerLarge();
+                 updateTimeContainerLarge2();
+
             }
         });
 
