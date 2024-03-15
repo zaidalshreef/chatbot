@@ -104,8 +104,8 @@ function updateTimeContainerLarge() {
 // Function to update the timeContainer text content for small screens
 // Note: add the function to mutation observer
 function updateTimeContainerSmall2() {
-    let timeContainerSmall = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.mt-4.container > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div > div > div:nth-child(2) > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0");
-    ;
+    let timeContainerSmall = document.querySelector("#__layout > div > div > div > div > div:nth-child(2) > div.container > div:nth-child(1) > div:nth-child(2) > div > div > div.b-overlay-wrap.position-relative.p-1.sticky-loading-overlay > div > span > form > div > div > div > div:nth-child(2) > div > div > div > div > div:nth-child(2) > div > div.d-flex.justify-content-between.align-items-center > div > p.mx-1.m-0")
+        ;
     if (timeContainerSmall) {
         let svg = timeContainerSmall.querySelector("svg");
         let textNode = svg ? svg.nextSibling : null;
@@ -847,8 +847,8 @@ function observeDOM() {
         initializeNavbarImageClick(); // Call this again if dynamic content might include the navbar image
         // Initial call to updateTimeContainer for both small and large screens
         updateTimeContainerSmall();
-        updateTimeContainerLarge();
         updateTimeContainerSmall2();
+        updateTimeContainerLarge();
         updateTimeContainerLarge2();
         checkAppointmentCards();
         handleEmailButtons();
