@@ -8,7 +8,7 @@ async function sendMessageToChatbot(message) {
 
   // Send a POST request to the chatbot API with your message as the payload 
   const response = await fetch(
-    "http://127.0.0.1:5000/chat",
+    "http://10.10.10.222:5000/chat",
     {
       method: "POST",
       headers: {
