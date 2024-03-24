@@ -744,60 +744,62 @@ function addDiscountBadge(card) {
 
 function addToggleVisibilityButtons(card) {
 
-    // Find the element to hide/show within the card
-    const elementToToggle = card.querySelector('.border.rounded .text-left.mt-2');
+    // Find the paragraph containing the <em> element
+    const paragraphToToggle = card.querySelector('p:has(em)');
 
-    if (elementToToggle && !card.querySelector('.toggle-visibility-btn')) {
-        // Hide the element by default
-        elementToToggle.style.display = 'none';
-
-
-
-        // Create a container div for the button to center it
-        const buttonContainer = document.createElement('div');
-        buttonContainer.style.textAlign = 'center'; // Center the button
-        buttonContainer.style.marginBottom = '2px'; // Add some margin to the bottom
-        buttonContainer.style.marginTop = '5px'; // Add some margin to the Top
-
-
-        // Create the toggle button
-        const toggleButton = document.createElement('button');
-        toggleButton.textContent = 'مشاهدة التفاصيل'; // Initial button text
-        toggleButton.classList.add('toggle-visibility-btn'); // Add a class to the button for identification
-
-        // Style the toggle button
-        toggleButton.style.backgroundColor = 'white'; // Set background to white
-        toggleButton.style.color = '#add8e6'; // Set text color to light blue
-        toggleButton.style.border = 'none'; // Remove border
-        toggleButton.style.padding = '5px 10px'; // Add some padding
-        toggleButton.style.borderRadius = '5px'; // Optionally round the corners
-        toggleButton.style.cursor = 'pointer'; // Change cursor on hover
-        toggleButton.style.fontWeight = 'bold'; // Make the text a little bit bolder
-
-        // Add event listener to toggle visibility on click
-        toggleButton.addEventListener('click', () => {
-
-            // Prevent the default button action
-            event.preventDefault();
-
-            // Check if the element is currently visible
-            if (elementToToggle.style.display === 'none') {
-                // If the element is hidden, show it
-                elementToToggle.style.display = '';
-                toggleButton.textContent = 'اخفاء التفاصيل'; // Update button text
-
-            } else {
-                // If the element is shown, hide it
-                elementToToggle.style.display = 'none';
-                toggleButton.textContent = 'مشاهدة التفاصيل'; // Update button text
+    if (paragraphToToggle) {
+        // Check if there are paragraphs following the target paragraph
+        const paragraphsFollowing = paragraphToToggle.nextElementSibling;
+        if (paragraphsFollowing && !card.querySelector('.toggle-visibility-btn')) {
+            // Hide all paragraphs following the one containing the <em> element
+            let paragraphsToToggle = [];
+            let nextSibling = paragraphsFollowing;
+            while (nextSibling) {
+                paragraphsToToggle.push(nextSibling);
+                nextSibling = nextSibling.nextElementSibling;
             }
-        });
+            paragraphsToToggle.forEach(paragraph => {
+                paragraph.style.display = 'none';
+            });
 
-        // Append the toggle button to the container div
-        buttonContainer.appendChild(toggleButton);
+            // Create a container div for the button to center it
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.textAlign = 'center'; // Center the button
+            buttonContainer.style.marginBottom = '2px'; // Add some margin to the bottom
+            buttonContainer.style.marginTop = '5px'; // Add some margin to the Top
 
-        // Insert the container div with the button above the element to toggle
-        elementToToggle.parentNode.insertBefore(buttonContainer, elementToToggle);
+            // Create the toggle button
+            const toggleButton = document.createElement('button');
+            toggleButton.textContent = 'مشاهدة التفاصيل'; // Initial button text
+            toggleButton.classList.add('toggle-visibility-btn'); // Add a class to the button for identification
+
+            // Style the toggle button
+            toggleButton.style.backgroundColor = 'white'; // Set background to white
+            toggleButton.style.color = '#add8e6'; // Set text color to light blue
+            toggleButton.style.border = 'none'; // Remove border
+            toggleButton.style.padding = '5px 10px'; // Add some padding
+            toggleButton.style.borderRadius = '5px'; // Optionally round the corners
+            toggleButton.style.cursor = 'pointer'; // Change cursor on hover
+            toggleButton.style.fontWeight = 'bold'; // Make the text a little bit bolder
+
+            // Add event listener to toggle visibility on click
+            toggleButton.addEventListener('click', () => {
+                // Toggle visibility of all paragraphs following the one containing the <em> element
+                paragraphsToToggle.forEach(paragraph => {
+                    paragraph.style.display = (paragraph.style.display === 'none') ? '' : 'none';
+                });
+
+                // Update button text based on visibility
+                const isVisible = paragraphsToToggle[0].style.display !== 'none';
+                toggleButton.textContent = isVisible ? 'اخفاء التفاصيل' : 'مشاهدة التفاصيل';
+            });
+
+            // Append the toggle button to the container div
+            buttonContainer.appendChild(toggleButton);
+
+            // Insert the container div with the button after the paragraph containing the <em> element
+            paragraphToToggle.parentNode.insertBefore(buttonContainer, paragraphToToggle.nextSibling);
+        }
     }
 }
 
