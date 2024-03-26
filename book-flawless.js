@@ -317,67 +317,6 @@ function findScheduleSuccessMsg() {
     }
 }
 
-/**
- * Redirects the user to the home page and clicks on the specified session type.
- */
-/*
-function clickTheNextSession(navbarBtns, toSessionType) {
-    // Set local storage to indicate the session type to click on after redirect
-    localStorage.setItem('nextSessionType', toSessionType);
-
-    // redirect user to the home page and click on the second session
-    setTimeout(() => {
-        navbarBtns.forEach(btn => {
-            if (btn.textContent.trim() === "الرئيسية" || btn.textContent.trim() === "Home") {
-                btn.click();
-            }
-        });
-    }, 2000);
-}
-*/
-/*
-function processToNextSessionType() {
-    const toSessionType = localStorage.getItem('nextSessionType');
-    if (toSessionType) {
-        console.log(`Processing to the next session type: ${toSessionType}`)
-        const bookingTypes = document.querySelectorAll('.booking-type');
-        bookingTypes.forEach(type => {
-            if (type.textContent.includes(toSessionType)) {
-                let button = type.querySelector('button');
-                if (button) {
-                    button.click();
-                    // Clear the local storage item after clicking
-                    localStorage.removeItem('nextSessionType');
-                }
-            }
-        });
-    }
-}
-*/
-/*
-// Function to check and add the link when the session type matches
-function checkAndAddLink(sessionTypeElement) {
-    // Query both wide and mobile screen buttons
-    const wideScreenBtns = document.querySelectorAll('.navbar-nav .header-menu button');
-    const mobileScreenBtns = document.querySelectorAll('button.main-menu-btn');
-
-    // Merge NodeLists into a single array for iteration
-    const navbarBtns = [...wideScreenBtns, ...mobileScreenBtns];
-
-    // Check if the link has already been added
-    if (!sessionTypeElement.querySelector('.custom-extra-link')) {
-        if (sessionTypeElement.textContent.includes(PACKAGE_SESSION_TYPE_TITLE)) {
-            clickTheNextSession(navbarBtns, PACKAGE_SECOND_SESSION)
-        }
-        else if (sessionTypeElement.textContent.includes(PACKAGE_SECOND_SESSION)) {
-            clickTheNextSession(navbarBtns, PACKAGE_THIRD_SESSION)
-        }
-        else if (sessionTypeElement.textContent.includes(PACKAGE_THIRD_SESSION)) {
-            clickTheNextSession(navbarBtns, PACKAGE_FORTH_SESSION)
-        }
-    } else console.log("link added");
-}
-*/
 
 
 // Function to add click event listeners to images within .silentbox-item containers
@@ -560,11 +499,18 @@ function addClickListener() {
 }
 
 // Function to check and hide booking type if it matches the criteria for each package
-function toggleBookingTypeIfNeeded(element, bookedSessionsByPackage) {
+function toggleBookingTypeIfNeeded(element, bookedSessionsByPackage , bookedSession) {
     var text = element.textContent || element.innerText;
 
     // Initially, assume the element should be shown
     element.style.display = 'block';
+
+    if (text.includes("الجلسة المجانية")) {
+        // If the single session is booked, hide the element
+        console.log("in free session")
+      element.style.display = bookedSession.single ? 'none' : 'block';
+      return
+    }
 
     // Loop through each package to apply visibility rules
     Object.keys(bookedSessionsByPackage).forEach(packageKey => {
@@ -625,6 +571,10 @@ function checkAppointmentCards() {
         }
     };
 
+    let bookedSession = {
+        single: false
+    };
+
     appointmentCards.forEach(card => {
         const cardText = card.textContent.trim();
         let currentPackageKey = null;
@@ -654,10 +604,15 @@ function checkAppointmentCards() {
                 }
             });
         }
+        // Check for the free session
+        if (cardText.includes("الجلسة المجانية") && !cardText.includes("الموعد ملغي")) {
+            bookedSession.single = true;
+        }
     });
+ 
 
     bookingTypes.forEach(bookingType => {
-        toggleBookingTypeIfNeeded(bookingType, bookedSessionsByPackage);
+        toggleBookingTypeIfNeeded(bookingType, bookedSessionsByPackage,bookedSession);
     });
 }
 
@@ -713,7 +668,7 @@ function debounce(func, wait) {
 
 function addDiscountBadge(card) {
     // Check if the card already has a discount badge
-    if (!card.querySelector('.badge-discount') && (card.textContent == "باقة اللإنطلاقة" || card.textContent == "باقة الخريج")) {
+    if (!card.querySelector('.badge-discount') && (card.textContent.includes("باقة اللإنطلاقة") || card.textContent.includes("باقة الخريج"))) {
         // Create the badge element
         const badge = document.createElement('span');
         badge.classList.add('badge-discount');
@@ -879,7 +834,6 @@ function observeDOM() {
 // Call the observeDOM function to start observing DOM changes
 observeDOM();
 
-processToNextSessionType();
 
 // the call order is important -> addBookingBtnMobile() should be called before addHomeBtnMobile()
 addBookingBtnMobile();
